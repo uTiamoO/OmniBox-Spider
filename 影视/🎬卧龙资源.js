@@ -1,4 +1,4 @@
-﻿// @name 站点合集
+﻿// @name 🎬卧龙资源
 // @downloadURL https://gh-proxy.org/https://github.com/Silent1566/OmniBox-Spider/raw/refs/heads/main/模板/JavaScript/采集站模板.js
 /**
  * OmniBox 采集站直接爬虫脚本
@@ -8,7 +8,7 @@
  *
  * 配置说明：
  * 1. 在 OmniBox 后台添加采集站，获取采集站的 API 地址
- * 2. 将 API 地址配置到环境变量 SITE_API 中，或通过 SITE_KEY / SITE_NAME 在站点列表中切换
+ * 2. 将 API 地址配置到环境变量 SITE_API 中，或直接修改下面的 SITE_API 常量
  * 3. （可选）配置弹幕 API 地址到环境变量 DANMU_API 中，或直接修改下面的 DANMU_API 常量
  *    弹幕 API 地址示例：https://danmu.example.com
  *
@@ -31,393 +31,22 @@
  * 使用方法：
  * 1. 在 OmniBox 后台创建爬虫源，选择 JavaScript 类型
  * 2. 复制此脚本内容到爬虫源编辑器
- * 3. 配置环境变量 SITE_API 为采集站的 API 地址，或配置 SITE_KEY / SITE_NAME 选择站点
+ * 3. 配置环境变量 SITE_API 为采集站的 API 地址
  * 4. 保存并测试
  */
 
 const OmniBox = require("omnibox_sdk");
 
 // ==================== 配置区域 ====================
-const SITE_CONFIGS = {
-    "🎬-爱奇艺-":  {
-                    "key":  "🎬-爱奇艺-",
-                    "name":  "🎬-爱奇艺-",
-                    "api":  "https://iqiyizyapi.com/api.php/provide/vod",
-                    "type":  2,
-                    "isActive":  1,
-                    "priority":  0,
-                    "proxyMode":  "none"
-                },
-    "🎬360 资源":  {
-                     "key":  "🎬360 资源",
-                     "name":  "🎬360 资源",
-                     "api":  "https://360zy.com/api.php/provide/vod",
-                     "type":  2,
-                     "isActive":  1,
-                     "priority":  0,
-                     "proxyMode":  "none"
-                 },
-    "🎬百度云zy":  {
-                    "key":  "🎬百度云zy",
-                    "name":  "🎬百度云zy",
-                    "api":  "https://pz.168188.dpdns.org/?url=https://api.apibdzy.com/api.php/provide/vod",
-                    "type":  2,
-                    "isActive":  1,
-                    "priority":  0,
-                    "proxyMode":  "none"
-                },
-    "🎬暴风资源":  {
-                   "key":  "🎬暴风资源",
-                   "name":  "🎬暴风资源",
-                   "api":  "https://bfzyapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬电影天堂":  {
-                   "key":  "🎬电影天堂",
-                   "name":  "🎬电影天堂",
-                   "api":  "http://caiji.dyttzyapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬豆瓣资源":  {
-                   "key":  "🎬豆瓣资源",
-                   "name":  "🎬豆瓣资源",
-                   "api":  "https://caiji.dbzy5.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬非凡资源":  {
-                   "key":  "🎬非凡资源",
-                   "name":  "🎬非凡资源",
-                   "api":  "https://api.ffzyapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬光速资源":  {
-                   "key":  "🎬光速资源",
-                   "name":  "🎬光速资源",
-                   "api":  "https://api.guangsuapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬豪华资源":  {
-                   "key":  "🎬豪华资源",
-                   "name":  "🎬豪华资源",
-                   "api":  "https://pz.168188.dpdns.org/?url=https://hhzyapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬红牛资源":  {
-                   "key":  "🎬红牛资源",
-                   "name":  "🎬红牛资源",
-                   "api":  "https://www.hongniuzy2.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬虎牙资源":  {
-                   "key":  "🎬虎牙资源",
-                   "name":  "🎬虎牙资源",
-                   "api":  "https://www.huyaapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬极速资源":  {
-                   "key":  "🎬极速资源",
-                   "name":  "🎬极速资源",
-                   "api":  "https://jszyapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬金蝉影视":  {
-                   "key":  "🎬金蝉影视",
-                   "name":  "🎬金蝉影视",
-                   "api":  "https://zy.jinchancaiji.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬金鹰点播":  {
-                   "key":  "🎬金鹰点播",
-                   "name":  "🎬金鹰点播",
-                   "api":  "https://jinyingzy.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬快车资源":  {
-                   "key":  "🎬快车资源",
-                   "name":  "🎬快车资源",
-                   "api":  "https://caiji.kuaichezy.org/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬量子影视":  {
-                   "key":  "🎬量子影视",
-                   "name":  "🎬量子影视",
-                   "api":  "https://cj.lziapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬量子资源":  {
-                   "key":  "🎬量子资源",
-                   "name":  "🎬量子资源",
-                   "api":  "https://cj.lzcaiji.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬猫眼资源":  {
-                   "key":  "🎬猫眼资源",
-                   "name":  "🎬猫眼资源",
-                   "api":  "https://api.maoyanapi.top/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬茅台资源":  {
-                   "key":  "🎬茅台资源",
-                   "name":  "🎬茅台资源",
-                   "api":  "https://caiji.maotaizy.cc/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬魔都动漫":  {
-                   "key":  "🎬魔都动漫",
-                   "name":  "🎬魔都动漫",
-                   "api":  "https://caiji.moduapi.cc/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬魔都资源":  {
-                   "key":  "🎬魔都资源",
-                   "name":  "🎬魔都资源",
-                   "api":  "https://www.mdzyapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬飘零资源":  {
-                   "key":  "🎬飘零资源",
-                   "name":  "🎬飘零资源",
-                   "api":  "https://p2100.net/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬如意资源":  {
-                   "key":  "🎬如意资源",
-                   "name":  "🎬如意资源",
-                   "api":  "https://pz.168188.dpdns.org/?url=https://cj.rycjapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬山海资源":  {
-                   "key":  "🎬山海资源",
-                   "name":  "🎬山海资源",
-                   "api":  "https://zy.sh0o.cn/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬闪电资源":  {
-                   "key":  "🎬闪电资源",
-                   "name":  "🎬闪电资源",
-                   "api":  "https://xsd.sdzyapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬速播资源":  {
-                   "key":  "🎬速播资源",
-                   "name":  "🎬速播资源",
-                   "api":  "https://subocaiji.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬索尼资源":  {
-                   "key":  "🎬索尼资源",
-                   "name":  "🎬索尼资源",
-                   "api":  "https://suoniapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬天涯影视":  {
-                   "key":  "🎬天涯影视",
-                   "name":  "🎬天涯影视",
-                   "api":  "https://tyyszy.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬旺旺短剧":  {
-                   "key":  "🎬旺旺短剧",
-                   "name":  "🎬旺旺短剧",
-                   "api":  "https://wwzy.tv/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬旺旺资源":  {
-                   "key":  "🎬旺旺资源",
-                   "name":  "🎬旺旺资源",
-                   "api":  "https://api.wwzy.tv/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬卧龙资源":  {
-                   "key":  "🎬卧龙资源",
-                   "name":  "🎬卧龙资源",
-                   "api":  "https://wolongzyw.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬无尽影视":  {
-                   "key":  "🎬无尽影视",
-                   "name":  "🎬无尽影视",
-                   "api":  "https://api.wujinapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬无尽资源":  {
-                   "key":  "🎬无尽资源",
-                   "name":  "🎬无尽资源",
-                   "api":  "https://api.wujinapi.me/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬新浪资源":  {
-                   "key":  "🎬新浪资源",
-                   "name":  "🎬新浪资源",
-                   "api":  "https://api.xinlangapi.com/xinlangapi.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬鸭鸭资源":  {
-                   "key":  "🎬鸭鸭资源",
-                   "name":  "🎬鸭鸭资源",
-                   "api":  "https://cj.yayazy.net/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬樱花资源":  {
-                   "key":  "🎬樱花资源",
-                   "name":  "🎬樱花资源",
-                   "api":  "https://m3u8.apiyhzy.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬优质资源":  {
-                   "key":  "🎬优质资源",
-                   "name":  "🎬优质资源",
-                   "api":  "https://api.yzzy-api.com/inc/apijson.php",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬最大点播":  {
-                   "key":  "🎬最大点播",
-                   "name":  "🎬最大点播",
-                   "api":  "https://zuidazy.me/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬最大资源":  {
-                   "key":  "🎬最大资源",
-                   "name":  "🎬最大资源",
-                   "api":  "https://api.zuidapi.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               },
-    "🎬iKun资源":  {
-                     "key":  "🎬iKun资源",
-                     "name":  "🎬iKun资源",
-                     "api":  "https://ikunzyapi.com/api.php/provide/vod",
-                     "type":  2,
-                     "isActive":  1,
-                     "priority":  0,
-                     "proxyMode":  "none"
-                 },
-    "🎬U酷影视":  {
-                   "key":  "🎬U酷影视",
-                   "name":  "🎬U酷影视",
-                   "api":  "https://api.ukuapi88.com/api.php/provide/vod",
-                   "type":  2,
-                   "isActive":  1,
-                   "priority":  0,
-                   "proxyMode":  "none"
-               }
-};
-// 默认站点标识（可通过环境变量 SITE_KEY / SITE_NAME 切换）
-const DEFAULT_SITE_IDENTIFIER = process.env.SITE_KEY || process.env.SITE_NAME || "🎬-爱奇艺-";
-const ACTIVE_SITE = resolveSiteConfig(DEFAULT_SITE_IDENTIFIER);
-const SITE_API = process.env.SITE_API || (ACTIVE_SITE ? ACTIVE_SITE.api : "");
-const SITE_LABEL = ACTIVE_SITE ? `${ACTIVE_SITE.name} (${ACTIVE_SITE.key})` : DEFAULT_SITE_IDENTIFIER;
+// 采集站 API 地址（优先使用环境变量，如果没有则使用默认值）
+// 例如：https://example.com/api.php/provide/vod/
+const SITE_API = process.env.SITE_API || "https://wolongzyw.com/api.php/provide/vod";
+
 // 弹幕 API 地址（优先使用环境变量，如果没有则使用默认值）
 // 例如：https://danmu.example.com
 // 如果为空，则不启用弹幕功能
 const DANMU_API = process.env.DANMU_API || "";
+
 // ==================== 配置区域结束 ====================
 
 /**
@@ -425,22 +54,6 @@ const DANMU_API = process.env.DANMU_API || "";
  * @param {Object} params - 查询参数对象
  * @returns {Promise<Object>} API 响应数据
  */
-function resolveSiteConfig(identifier) {
-    if (!identifier) {
-        return null;
-    }
-    const normalized = String(identifier).trim();
-    if (!normalized) {
-        return null;
-    }
-    if (SITE_CONFIGS[normalized]) {
-        return SITE_CONFIGS[normalized];
-    }
-    return Object.values(SITE_CONFIGS).find((site) => {
-        return site.key === normalized || site.name === normalized || site.api === normalized;
-    }) || null;
-}
-
 async function requestSiteAPI(params = {}) {
     if (!SITE_API) {
         throw new Error("请配置采集站 API 地址（SITE_API 环境变量）");
@@ -454,7 +67,7 @@ async function requestSiteAPI(params = {}) {
         }
     });
 
-    OmniBox.log("info", `请求采集站[${SITE_LABEL}]: ${url.toString()}`);
+    OmniBox.log("info", `请求采集站: ${url.toString()}`);
 
     try {
         const response = await OmniBox.request(url.toString(), {

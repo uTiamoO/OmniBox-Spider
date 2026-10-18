@@ -1,4 +1,4 @@
-﻿// @name 站点合集
+﻿// @name 🎬速播资源
 // @downloadURL https://gh-proxy.org/https://github.com/Silent1566/OmniBox-Spider/raw/refs/heads/main/模板/JavaScript/采集站模板.js
 /**
  * OmniBox 采集站直接爬虫脚本
@@ -8,7 +8,7 @@
  *
  * 配置说明：
  * 1. 在 OmniBox 后台添加采集站，获取采集站的 API 地址
- * 2. 将 API 地址配置到环境变量 SITE_API 中，或通过 SITE_KEY / SITE_NAME 在站点列表中切换
+ * 2. 将 API 地址配置到环境变量 SITE_API 中，或直接修改下面的 SITE_API 常量
  * 3. （可选）配置弹幕 API 地址到环境变量 DANMU_API 中，或直接修改下面的 DANMU_API 常量
  *    弹幕 API 地址示例：https://danmu.example.com
  *
@@ -31,353 +31,17 @@
  * 使用方法：
  * 1. 在 OmniBox 后台创建爬虫源，选择 JavaScript 类型
  * 2. 复制此脚本内容到爬虫源编辑器
- * 3. 配置环境变量 SITE_API 为采集站的 API 地址，或配置 SITE_KEY / SITE_NAME 选择站点
+ * 3. 配置环境变量 SITE_API 为采集站的 API 地址
  * 4. 保存并测试
  */
 
 const OmniBox = require("omnibox_sdk");
 
 // ==================== 配置区域 ====================
-const SITE_CONFIGS = {
-    "🔞 CK-资源": {
-        "key": "🔞 CK-资源",
-        "name": "🔞 CK-资源",
-        "api": "https://ckzy.me/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞--AIvin-": {
-        "key": "🔞--AIvin-",
-        "name": "🔞--AIvin-",
-        "api": "http://lbapiby.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞-奥斯卡-": {
-        "key": "🔞-奥斯卡-",
-        "name": "🔞-奥斯卡-",
-        "api": "https://aosikazy.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞-大奶子-": {
-        "key": "🔞-大奶子-",
-        "name": "🔞-大奶子-",
-        "api": "https://apidanaizi.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞-黄AVZY": {
-        "key": "🔞-黄AVZY",
-        "name": "🔞-黄AVZY",
-        "api": "https://www.pgxdy.com/api/json.php",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞-老色逼-": {
-        "key": "🔞-老色逼-",
-        "name": "🔞-老色逼-",
-        "api": "https://apilsbzy1.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞-美少女-": {
-        "key": "🔞-美少女-",
-        "name": "🔞-美少女-",
-        "api": "https://www.msnii.com/api/json.php",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞-色南国-": {
-        "key": "🔞-色南国-",
-        "name": "🔞-色南国-",
-        "api": "https://api.sexnguon.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞-幸资源-": {
-        "key": "🔞-幸资源-",
-        "name": "🔞-幸资源-",
-        "api": "https://xzybb2.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞155-资源": {
-        "key": "🔞155-资源",
-        "name": "🔞155-资源",
-        "api": "https://155api.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞91-精品-": {
-        "key": "🔞91-精品-",
-        "name": "🔞91-精品-",
-        "api": "https://91jpzyw.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞白嫖资源": {
-        "key": "🔞白嫖资源",
-        "name": "🔞白嫖资源",
-        "api": "https://www.kxgav.com/api/json.php",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞百万资源": {
-        "key": "🔞百万资源",
-        "name": "🔞百万资源",
-        "api": "https://api.bwzyz.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞大地资源": {
-        "key": "🔞大地资源",
-        "name": "🔞大地资源",
-        "api": "https://dadiapi.com/feifei",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞滴滴资源": {
-        "key": "🔞滴滴资源",
-        "name": "🔞滴滴资源",
-        "api": "https://api.ddapi.cc/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞豆豆资源": {
-        "key": "🔞豆豆资源",
-        "name": "🔞豆豆资源",
-        "api": "https://api.douapi.cc/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞番号资源": {
-        "key": "🔞番号资源",
-        "name": "🔞番号资源",
-        "api": "http://fhapi9.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞黑料资源": {
-        "key": "🔞黑料资源",
-        "name": "🔞黑料资源",
-        "api": "https://www.heiliaozyapi.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞黄色仓库": {
-        "key": "🔞黄色仓库",
-        "name": "🔞黄色仓库",
-        "api": "https://hsckzy.xyz/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞精品资源": {
-        "key": "🔞精品资源",
-        "name": "🔞精品资源",
-        "api": "https://www.jingpinx.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞辣椒资源": {
-        "key": "🔞辣椒资源",
-        "name": "🔞辣椒资源",
-        "api": "https://apilj.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞乐播资源": {
-        "key": "🔞乐播资源",
-        "name": "🔞乐播资源",
-        "api": "https://lbapi9.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞麻豆视频": {
-        "key": "🔞麻豆视频",
-        "name": "🔞麻豆视频",
-        "api": "https://91md.me/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞奶香资源": {
-        "key": "🔞奶香资源",
-        "name": "🔞奶香资源",
-        "api": "https://Naixxzy.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞色猫资源": {
-        "key": "🔞色猫资源",
-        "name": "🔞色猫资源",
-        "api": "https://caiji.semaozy.net/inc/apijson_vod.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞森林资源": {
-        "key": "🔞森林资源",
-        "name": "🔞森林资源",
-        "api": "https://beiyong.slapibf.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞鲨鱼资源": {
-        "key": "🔞鲨鱼资源",
-        "name": "🔞鲨鱼资源",
-        "api": "https://shayuapi.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞丝袜资源": {
-        "key": "🔞丝袜资源",
-        "name": "🔞丝袜资源",
-        "api": "https://siwazyw.tv/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞桃花资源": {
-        "key": "🔞桃花资源",
-        "name": "🔞桃花资源",
-        "api": "https://thzy1.me/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞细胞资源": {
-        "key": "🔞细胞资源",
-        "name": "🔞细胞资源",
-        "api": "https://www.xxibaozyw.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞香蕉资源": {
-        "key": "🔞香蕉资源",
-        "name": "🔞香蕉资源",
-        "api": "https://www.xiangjiaozyw.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞小鸡资源": {
-        "key": "🔞小鸡资源",
-        "name": "🔞小鸡资源",
-        "api": "https://api.xiaojizy.live/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞杏吧资源": {
-        "key": "🔞杏吧资源",
-        "name": "🔞杏吧资源",
-        "api": "https://pz.168188.dpdns.org/?url=https://xingba222.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞优优资源": {
-        "key": "🔞优优资源",
-        "name": "🔞优优资源",
-        "api": "https://www.yyzywcj.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞玉兔资源": {
-        "key": "🔞玉兔资源",
-        "name": "🔞玉兔资源",
-        "api": "https://apiyutu.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞jkun资源": {
-        "key": "🔞jkun资源",
-        "name": "🔞jkun资源",
-        "api": "https://jkunzyapi.com/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    },
-    "🔞souavZY": {
-        "key": "🔞souavZY",
-        "name": "🔞souavZY",
-        "api": "https://api.souavzy.vip/api.php/provide/vod",
-        "type": 2,
-        "isActive": 1,
-        "priority": 0,
-        "proxyMode": "none"
-    }
-};
-// 默认站点标识（可通过环境变量 SITE_KEY / SITE_NAME 切换）
-const DEFAULT_SITE_IDENTIFIER = process.env.SITE_KEY || process.env.SITE_NAME || "🎬-爱奇艺-";
-const ACTIVE_SITE = resolveSiteConfig(DEFAULT_SITE_IDENTIFIER);
-const SITE_API = process.env.SITE_API || (ACTIVE_SITE ? ACTIVE_SITE.api : "");
-const SITE_LABEL = ACTIVE_SITE ? `${ACTIVE_SITE.name} (${ACTIVE_SITE.key})` : DEFAULT_SITE_IDENTIFIER;
+// 采集站 API 地址（优先使用环境变量，如果没有则使用默认值）
+// 例如：https://example.com/api.php/provide/vod/
+const SITE_API = process.env.SITE_API || "https://subocaiji.com/api.php/provide/vod";
+
 // 弹幕 API 地址（优先使用环境变量，如果没有则使用默认值）
 // 例如：https://danmu.example.com
 // 如果为空，则不启用弹幕功能
@@ -390,22 +54,6 @@ const DANMU_API = process.env.DANMU_API || "";
  * @param {Object} params - 查询参数对象
  * @returns {Promise<Object>} API 响应数据
  */
-function resolveSiteConfig(identifier) {
-    if (!identifier) {
-        return null;
-    }
-    const normalized = String(identifier).trim();
-    if (!normalized) {
-        return null;
-    }
-    if (SITE_CONFIGS[normalized]) {
-        return SITE_CONFIGS[normalized];
-    }
-    return Object.values(SITE_CONFIGS).find((site) => {
-        return site.key === normalized || site.name === normalized || site.api === normalized;
-    }) || null;
-}
-
 async function requestSiteAPI(params = {}) {
     if (!SITE_API) {
         throw new Error("请配置采集站 API 地址（SITE_API 环境变量）");
@@ -419,7 +67,7 @@ async function requestSiteAPI(params = {}) {
         }
     });
 
-    OmniBox.log("info", `请求采集站[${SITE_LABEL}]: ${url.toString()}`);
+    OmniBox.log("info", `请求采集站: ${url.toString()}`);
 
     try {
         const response = await OmniBox.request(url.toString(), {
@@ -825,7 +473,7 @@ async function home(params) {
         // 如果没有分类数据，尝试单独获取分类
         if (!response.class || (Array.isArray(response.class) && response.class.length === 0)) {
             try {
-                const classResponse = await requestSiteAPI({ac: "class"});
+                const classResponse = await requestSiteAPI({ ac: "class" });
                 if (classResponse.class) {
                     response.class = classResponse.class;
                 }
@@ -1018,7 +666,7 @@ async function matchDanmu(fileName) {
                 "Content-Type": "application/json",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
             },
-            body: JSON.stringify({fileName: fileName}),
+            body: JSON.stringify({ fileName: fileName }),
         });
 
         if (response.statusCode !== 200) {
@@ -1187,8 +835,7 @@ async function play(params) {
         let playResponse = {
             urls: urlsResult,
             header: {},
-            parse: parse
-        };
+            parse: parse};
 
         // 弹幕匹配（如果配置了弹幕API）
         if (DANMU_API && videoId) {

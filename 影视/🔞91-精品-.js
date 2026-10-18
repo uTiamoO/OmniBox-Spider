@@ -1,4 +1,4 @@
-// @name 采集站模板
+﻿// @name 🔞91-精品-
 // @downloadURL https://gh-proxy.org/https://github.com/Silent1566/OmniBox-Spider/raw/refs/heads/main/模板/JavaScript/采集站模板.js
 /**
  * OmniBox 采集站直接爬虫脚本
@@ -40,7 +40,7 @@ const OmniBox = require("omnibox_sdk");
 // ==================== 配置区域 ====================
 // 采集站 API 地址（优先使用环境变量，如果没有则使用默认值）
 // 例如：https://example.com/api.php/provide/vod/
-const SITE_API = process.env.SITE_API || "https://iqiyizyapi.com/api.php/provide/vod";
+const SITE_API = process.env.SITE_API || "https://91jpzyw.com/api.php/provide/vod";
 
 // 弹幕 API 地址（优先使用环境变量，如果没有则使用默认值）
 // 例如：https://danmu.example.com
